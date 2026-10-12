@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refinance Desk</title>
+<meta name="description" content="A dedicated caller, a ranked call list every morning and call notes that land in Mercury Nexus. A walkthrough of one day on the desk.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF;
+  --mist:#F3F4F6;
+  --ember:#E96028;
+  --ember-deep:#C94A17;
+  --rust:#7E3216;
+  --ink:#242729;
+  --slate:#5B6166;
+  --line:#E2E4E7;
+  --leaf:#2E7A4E;
+  --leaf-soft:#E6F2EA;
+  --ember-soft:#FDEEE6;
+  --radius:6px;
+  --wrap:1180px;
+  --font:"Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;font-variation-settings:"opsz" 14;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%}
+a{color:var(--ember-deep)}
+:focus-visible{outline:3px solid var(--ember);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+@media (max-width:600px){.wrap{padding:0 16px}}
+h1,h2,h3{font-variation-settings:"opsz" 72;letter-spacing:-0.022em;line-height:1.08;margin:0}
+h1{font-size:clamp(2.35rem,5.2vw,4.15rem);font-weight:750}
+h2{font-size:clamp(1.75rem,3.2vw,2.5rem);font-weight:700}
+h3{font-size:1.18rem;font-weight:650;letter-spacing:-0.01em;line-height:1.25}
+p{margin:0 0 1em}
+.lede{font-size:clamp(1.08rem,1.5vw,1.25rem);color:var(--slate);max-width:36em}
+.muted{color:var(--slate)}
+.small{font-size:.875rem}
+
+/* top bar */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;letter-spacing:-0.01em;color:var(--ink);text-decoration:none}
+.mark svg{flex:none}
+.top nav{display:flex;gap:22px}
+.top nav a{color:var(--slate);text-decoration:none;font-size:.95rem}
+.top nav a:hover{color:var(--ink)}
+@media (max-width:760px){.top nav{display:none}}
+
+/* hero */
+.hero{padding:72px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
+.hero h1{max-width:12.5em}
+.hero .lede{margin-top:22px}
+.hero-actions{margin-top:30px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ember);color:#fff;text-decoration:none;font-weight:600;padding:13px 20px;border-radius:2px;font-size:1rem}
+.btn:hover{background:var(--ember-deep)}
+.hero-note{font-size:.9rem;color:var(--slate)}
+@media (max-width:940px){.hero{padding:48px 0 56px}.hero .wrap{grid-template-columns:1fr;gap:40px}}
+
+/* the morning list (hero object) */
+.list{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 0 var(--line),0 18px 40px -24px rgba(126,50,22,.35);overflow:hidden}
+.list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:18px 20px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff, #fcfcfd)}
+.list-head strong{display:block;font-size:1.05rem;letter-spacing:-0.01em}
+.list-head span{display:block;font-size:.85rem;color:var(--slate)}
+.count{font-size:.85rem;color:var(--slate);white-space:nowrap}
+.rows{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:650;font-size:.8rem;background:var(--mist);color:var(--ink)}
+.row:first-child .av{background:var(--ember-soft);color:var(--ember-deep)}
+.who{min-width:0}
+.who b{font-weight:600}
+.who b span{font-weight:400;color:var(--slate)}
+.why{display:block;font-size:.88rem;color:var(--slate);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{font-size:.8rem;font-weight:600;padding:5px 9px;border-radius:999px;white-space:nowrap;background:var(--mist);color:var(--slate)}
+.st.call{background:var(--ember-soft);color:var(--ember-deep)}
+.st.call::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ember);margin-right:6px;vertical-align:1px;animation:pulse 1.1s ease-in-out infinite}
+.st.done{background:var(--leaf-soft);color:var(--leaf)}
+@keyframes pulse{50%{opacity:.25}}
+.list-foot{padding:11px 20px;background:var(--mist);font-size:.8rem;color:var(--slate)}
+.js .rows .row{opacity:0;transform:translateY(6px)}
+.js .rows.in .row{opacity:1;transform:none;transition:opacity .35s ease, transform .35s ease}
+.js .rows.in .row:nth-child(2){transition-delay:.06s}.js .rows.in .row:nth-child(3){transition-delay:.12s}.js .rows.in .row:nth-child(4){transition-delay:.18s}.js .rows.in .row:nth-child(5){transition-delay:.24s}
+@media (prefers-reduced-motion: reduce){.js .rows .row{opacity:1;transform:none}.st.call::before{animation:none}}
+@media (max-width:420px){.row{grid-template-columns:34px minmax(0,1fr);}.row .st{grid-column:2;justify-self:start}.av{width:34px;height:34px}}
+
+/* band */
+.band{background:var(--rust);color:#fff;padding:64px 0}
+.band p{font-size:clamp(1.45rem,2.7vw,2.15rem);line-height:1.25;letter-spacing:-0.015em;font-variation-settings:"opsz" 60;font-weight:500;max-width:30em;margin:0}
+.band p + p{margin-top:18px;font-size:1.05rem;line-height:1.6;letter-spacing:0;color:rgba(255,255,255,.78);font-weight:400;max-width:44em;font-variation-settings:"opsz" 14}
+
+/* sections */
+section.block{padding:96px 0}
+section.alt{background:var(--mist)}
+.sec-head{max-width:46em;margin-bottom:44px}
+.sec-head p{margin-top:16px}
+@media (max-width:700px){section.block{padding:64px 0}}
+
+/* day on the desk */
+.desk{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start}
+.rail{position:relative;display:flex;flex-direction:column;gap:2px}
+.rail::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:var(--line)}
+.tab{position:relative;display:grid;grid-template-columns:24px 1fr;gap:14px;align-items:start;text-align:left;background:none;border:0;padding:12px 10px 12px 0;cursor:pointer;font:inherit;color:var(--slate)}
+.dot{width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--line);margin-top:2px;position:relative;z-index:1;transition:border-color .2s, background .2s}
+.tab .t{display:block;font-size:.85rem}
+.tab .l{display:block;font-weight:650;font-size:1.05rem;color:var(--ink);letter-spacing:-0.01em}
+.tab[aria-selected="true"] .dot{border-color:var(--ember);background:var(--ember);box-shadow:0 0 0 4px var(--ember-soft)}
+.tab[aria-selected="true"] .l{color:var(--ember-deep)}
+.tab:hover .l{color:var(--ember-deep)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:30px;min-height:430px}
+.panel[hidden]{display:none}
+.panel h3{margin-bottom:6px}
+.panel > .muted{margin-bottom:22px;max-width:46em}
+@media (max-width:900px){
+  .desk{grid-template-columns:1fr;gap:20px}
+  .rail{flex-direction:row;overflow-x:auto;gap:8px;padding-bottom:6px;scrollbar-width:thin}
+  .rail::before{display:none}
+  .tab{grid-template-columns:1fr;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--paper);flex:none}
+  .tab .dot,.tab .t{display:none}
+  .tab .l{font-size:.95rem}
+  .tab[aria-selected="true"]{background:var(--ember);border-color:var(--ember)}
+  .tab[aria-selected="true"] .l{color:#fff}
+  .panel{padding:22px 18px;min-height:0}
+}
+
+/* table in panel 1 */
+.tbl{width:100%;border-collapse:collapse;font-size:.95rem}
+.tbl th{text-align:left;font-weight:600;font-size:.82rem;color:var(--slate);padding:0 12px 10px 0;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{font-weight:600;white-space:nowrap}
+.tbl td:first-child span{display:block;font-weight:400;font-size:.85rem;color:var(--slate)}
+.lane{display:inline-block;font-size:.78rem;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.lane.w{background:var(--ember-soft);color:var(--ember-deep)}
+.lane.c{background:#E9EEF7;color:#2F4C86}
+.tick{color:var(--leaf);font-weight:600;white-space:nowrap}
+.src{margin-top:20px;padding:14px 16px;background:var(--mist);border-radius:4px;font-size:.92rem;color:var(--slate)}
+@media (max-width:700px){
+  .tbl thead{display:none}
+  .tbl, .tbl tbody, .tbl tr, .tbl td{display:block;width:100%}
+  .tbl tr{padding:12px 0;border-bottom:1px solid var(--line)}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td:nth-child(4)::before{content:"Heads up text: ";color:var(--slate);font-weight:400}
+  .list-head{flex-direction:column;align-items:flex-start;gap:4px}
+}
+
+/* script */
+.script{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);gap:26px}
+.say{list-style:none;margin:0;padding:0;counter-reset:s}
+.say li{position:relative;padding:0 0 18px 44px;counter-increment:s}
+.say li::before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:.8rem;font-weight:650;display:grid;place-items:center}
+.say li:not(:last-child)::after{content:"";position:absolute;left:13px;top:32px;bottom:4px;width:2px;background:var(--line)}
+.say .k{display:block;font-size:.85rem;color:var(--slate);margin-bottom:2px}
+.say q{display:block;quotes:none;font-size:1.02rem}
+.never{background:var(--ember-soft);border-radius:var(--radius);padding:20px 22px;align-self:start}
+.never h4{margin:0 0 10px;font-size:1rem;color:var(--ember-deep)}
+.never ul{margin:0;padding-left:18px}
+.never li{margin-bottom:6px}
+.never p{margin:14px 0 0;font-size:.92rem;color:var(--ink)}
+@media (max-width:860px){.script{grid-template-columns:1fr}}
+
+/* note */
+.note-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px}
+.transcript{background:var(--mist);border-radius:var(--radius);padding:18px 20px;font-size:.95rem}
+.transcript h4,.made h4{margin:0 0 12px;font-size:.9rem;color:var(--slate);font-weight:600}
+.line{margin-bottom:10px}
+.line b{font-weight:600}
+.made{border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.made .rec{border-left:3px solid var(--ember);padding:2px 0 2px 14px;margin-bottom:16px}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.task{background:var(--mist);border-radius:4px;padding:10px 12px;font-size:.9rem}
+.task b{display:block;font-size:.8rem;color:var(--slate);font-weight:600}
+.mail{border-top:1px dashed var(--line);padding-top:14px;font-size:.92rem}
+.mail .hold{display:inline-block;margin-top:8px;font-size:.8rem;font-weight:600;color:var(--ember-deep);background:var(--ember-soft);padding:4px 10px;border-radius:999px}
+@media (max-width:860px){.note-grid{grid-template-columns:1fr}.tasks{grid-template-columns:1fr}}
+
+/* booking */
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+.cal{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.cal-top{background:var(--ink);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;gap:10px;font-size:.92rem}
+.cal-body{padding:18px}
+.slot{display:grid;grid-template-columns:62px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.slot:last-child{border-bottom:0}
+.slot .time{color:var(--slate)}
+.slot.new{background:var(--leaf-soft);margin:0 -18px;padding:12px 18px;border-left:3px solid var(--leaf)}
+.slot.new b{color:var(--leaf)}
+.handover{padding:4px 0}
+.handover ul{margin:10px 0 0;padding-left:18px}
+.handover li{margin-bottom:6px}
+@media (max-width:860px){.book{grid-template-columns:1fr}}
+
+/* scorecard */
+.score{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.score div{padding:20px 18px;border-right:1px solid var(--line)}
+.score div:last-child{border-right:0}
+.score b{display:block;font-size:2.1rem;font-weight:700;letter-spacing:-0.03em;line-height:1;font-variation-settings:"opsz" 72}
+.score span{display:block;margin-top:8px;font-size:.88rem;color:var(--slate)}
+.score .hi b{color:var(--ember-deep)}
+.funnel{margin-top:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:150px 1fr 40px;gap:10px;align-items:center;font-size:.9rem}
+.bar i{display:block;height:10px;border-radius:999px;background:var(--line);overflow:hidden}
+.bar i s{display:block;height:100%;background:var(--ember)}
+.bar em{font-style:normal;text-align:right;color:var(--slate)}
+.ex{font-size:.82rem;color:var(--slate);margin-top:14px}
+@media (max-width:860px){.score{grid-template-columns:1fr 1fr}.score div:nth-child(2){border-right:0}.score div:nth-child(-n+2){border-bottom:1px solid var(--line)}.funnel{grid-template-columns:1fr}.bar{grid-template-columns:120px 1fr 36px}}
+
+/* lanes */
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink)}
+.lanes > div{padding:30px 34px 10px 0}
+.lanes > div + div{padding-left:34px;border-left:1px solid var(--line)}
+.lanes h3{margin-bottom:6px}
+.lanes ul{margin:16px 0 0;padding:0;list-style:none}
+.lanes li{padding:10px 0 10px 26px;border-bottom:1px solid var(--line);position:relative}
+.lanes li::before{content:"";position:absolute;left:0;top:19px;width:12px;height:2px;background:var(--ember)}
+.lanes .c li::before{background:#2F4C86}
+@media (max-width:820px){.lanes{grid-template-columns:1fr}.lanes > div{padding:26px 0 6px}.lanes > div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+
+/* caller */
+.caller{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:start}
+.promise{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.promise li{padding:20px 20px 20px 0;border-top:1px solid var(--line)}
+.promise li:nth-child(even){padding-left:20px;border-left:1px solid var(--line)}
+.promise b{display:block;font-weight:650;margin-bottom:4px;letter-spacing:-0.005em}
+.promise span{color:var(--slate);font-size:.96rem}
+.hours{margin-top:26px;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;background:var(--paper)}
+.hours h4{margin:0 0 12px;font-size:.95rem}
+.clock{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;margin-bottom:8px}
+.clock i{height:22px;border-radius:2px;background:var(--line)}
+.clock i.on{background:var(--ember)}
+.clock i.eve{background:#F4B696}
+.clock-l{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;font-size:.78rem;color:var(--slate)}
+.clock-l span{white-space:nowrap}
+@media (max-width:900px){.caller{grid-template-columns:1fr;gap:28px}}
+@media (max-width:600px){.promise{grid-template-columns:1fr}.promise li:nth-child(even){padding-left:0;border-left:0}}
+
+/* guardrails */
+.rails{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.rails > div{padding:24px 24px 24px 0;border-bottom:1px solid var(--line)}
+.rails > div:not(:nth-child(3n+1)){padding-left:24px;border-left:1px solid var(--line)}
+.rails h3{font-size:1.05rem;margin-bottom:8px}
+.rails p{margin:0;color:var(--slate);font-size:.95rem}
+@media (max-width:900px){.rails{grid-template-columns:1fr 1fr}.rails > div:not(:nth-child(3n+1)){padding-left:0;border-left:0}.rails > div:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}}
+@media (max-width:600px){.rails{grid-template-columns:1fr}.rails > div:nth-child(even){padding-left:0;border-left:0}}
+
+/* 30 days */
+.weeks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;counter-reset:w}
+.weeks li{counter-increment:w;padding-top:18px;border-top:3px solid var(--line)}
+.weeks li:first-child{border-top-color:var(--ember)}
+.weeks li::before{content:"Week " counter(w);display:block;font-size:.85rem;color:var(--slate);margin-bottom:6px}
+.weeks h3{margin-bottom:10px}
+.weeks p{color:var(--slate);font-size:.95rem;margin:0}
+@media (max-width:900px){.weeks{grid-template-columns:1fr 1fr;gap:28px 18px}}
+@media (max-width:560px){.weeks{grid-template-columns:1fr}}
+
+/* needs */
+.needs{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px}
+.ask{margin:0;padding:0;list-style:none;counter-reset:a}
+.ask li{counter-increment:a;display:grid;grid-template-columns:44px 1fr;gap:6px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ask li::before{content:counter(a);font-weight:700;font-size:1.3rem;color:var(--ember-deep);line-height:1.2}
+@media (max-width:860px){.needs{grid-template-columns:1fr;gap:20px}}
+
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font-size:.85rem;color:var(--slate)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Refinance Desk, back to top">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M3 13 L13 4 L23 13" fill="none" stroke="#E96028" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 12.5 V21.5 H19 V12.5" fill="none" stroke="#242729" stroke-width="2.2" stroke-linejoin="round"/><path d="M10.5 17.2 h5" stroke="#242729" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Refinance Desk
+    </a>
+    <nav aria-label="Sections">
+      <a href="#day">A day on the desk</a>
+      <a href="#caller">Your caller</a>
+      <a href="#rails">Compliance</a>
+      <a href="#start">Getting started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Every client in your book hears from you before another broker calls them.</h1>
+      <p class="lede">A dedicated caller on Perth hours, a ranked call list ready every morning, and call notes that write themselves into the client file in Mercury Nexus. Your brokers only see clients who have already said yes to a review.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#day">Walk through a day on the desk</a>
+        <span class="hero-note">Sample data throughout, client names masked</span>
+      </div>
+    </div>
+
+    <div class="list" aria-label="Sample of the morning call list">
+      <div class="list-head">
+        <div><strong>Today's call list</strong><span>Tuesday, ready at 8:45am Perth</span></div>
+        <div class="count">38 clients ranked</div>
+      </div>
+      <ol class="rows" id="heroRows">
+        <li class="row"><div class="av">KM</div><div class="who"><b>K.M. <span>Baldivis</span></b><span class="why">Fixed term ends in 33 days</span></div><span class="st" id="heroStatus">Text sent yesterday</span></li>
+        <li class="row"><div class="av">DR</div><div class="who"><b>D. and S.R. <span>Piara Waters</span></b><span class="why">Interest only ends in February</span></div><span class="st">Text sent yesterday</span></li>
+        <li class="row"><div class="av">TN</div><div class="who"><b>T.N. <span>Spearwood</span></b><span class="why">Settled 2019, no review on file since</span></div><span class="st">Text sent yesterday</span></li>
+        <li class="row"><div class="av">AL</div><div class="who"><b>A.L. <span>Harrisdale</span></b><span class="why">Last note mentions a kitchen renovation</span></div><span class="st">Queued</span></li>
+        <li class="row"><div class="av">RH</div><div class="who"><b>R.H. <span>Byford</span></b><span class="why">Met at your community stall on Saturday</span></div><span class="st">Queued</span></li>
+      </ol>
+      <div class="list-foot">Built overnight from your own Mercury Nexus data. Nothing leaves your system to make it.</div>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <div class="wrap">
+    <p>When a client refinances somewhere else, the trail goes with them. It usually starts with a phone call from someone who isn't you.</p>
+    <p>The desk makes sure that call comes from your office first. Fixed terms ending, interest only rolling off, loans nobody has reviewed in years, intentions your brokers already wrote down in past notes. Each one becomes a name on tomorrow morning's list.</p>
+  </div>
+</div>
+
+<section class="block" id="day">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>A day on the desk</h2>
+      <p class="lede">Follow one client from the morning list to a booked review with your broker, then see what lands in your inbox on Friday.</p>
+    </div>
+
+    <div class="desk">
+      <div class="rail" role="tablist" aria-label="Stages of the day" aria-orientation="vertical">
+        <button class="tab" role="tab" id="t1" aria-controls="p1" aria-selected="true"><span class="dot"></span><span><span class="t">8:45am</span><span class="l">The list is ready</span></span></button>
+        <button class="tab" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><span class="dot"></span><span><span class="t">9:00am</span><span class="l">The call</span></span></button>
+        <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="dot"></span><span><span class="t">9:06am</span><span class="l">The note in Mercury</span></span></button>
+        <button class="tab" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1"><span class="dot"></span><span><span class="t">9:07am</span><span class="l">Booked with a broker</span></span></button>
+        <button class="tab" role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1"><span class="dot"></span><span><span class="t">Friday</span><span class="l">Your scorecard</span></span></button>
+      </div>
+
+      <div>
+        <div class="panel" role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0">
+          <h3>The list is ready before your office opens</h3>
+          <p class="muted">Every client in the book is checked overnight. The ones with a real reason to talk this week go to the top, with that reason written next to their name so the caller opens with it.</p>
+          <table class="tbl">
+            <thead><tr><th>Client</th><th>Why they are on today's list</th><th>Lane</th><th>Heads up text</th></tr></thead>
+            <tbody>
+              <tr><td>K.M.<span>Baldivis</span></td><td>Fixed term ends in 33 days and rolls to the standard variable rate</td><td><span class="lane w">Your book</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>D. and S.R.<span>Piara Waters</span></td><td>Interest only ends in February, repayments step up</td><td><span class="lane w">Your book</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>T.N.<span>Spearwood</span></td><td>Settled in 2019, no rate review on file since</td><td><span class="lane w">Your book</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>A.L.<span>Harrisdale</span></td><td>Broker's last note: "thinking about renovating the kitchen next year"</td><td><span class="lane w">Your book</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>J.P.<span>Success</span></td><td>Fixed term ends in 71 days</td><td><span class="lane w">Your book</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>M.W.<span>Atwell</span></td><td>Enquired last year, did not go ahead, now 12 months on</td><td><span class="lane c">New conversation</span></td><td><span class="tick">Sent yesterday</span></td></tr>
+              <tr><td>R.H.<span>Byford</span></td><td>Left details at your community stall on Saturday</td><td><span class="lane c">New conversation</span></td><td class="muted">Not needed, met on Saturday</td></tr>
+            </tbody>
+          </table>
+          <div class="src">Where the reasons come from: fixed rate and interest only expiry dates, settlement dates, the last rate review recorded, and the notes your brokers have already written. Clients get a short heads up text from your office the day before, using the free loan health check you already offer.</div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden>
+          <h3>A short, friendly loan health check</h3>
+          <p class="muted">Around three minutes. The caller gathers the facts your broker needs and books a time. You sign off the script before the first call.</p>
+          <div class="script">
+            <ol class="say">
+              <li><span class="k">Open with who, where from and why</span><q>"Hi [first name], it's [caller name] calling from [your brokerage] about your free loan health check. Just so you know, this call is recorded for your file. Is now an OK time?"</q></li>
+              <li><span class="k">Use the reason from the list</span><q>"Our records show your fixed rate finishes in November, so we wanted to check in before it rolls over."</q></li>
+              <li><span class="k">Gather the facts</span><q>"Roughly what's the balance now? What are your repayments, and how often? Is anything coming up, like renovating, buying again or wanting lower repayments?"</q></li>
+              <li><span class="k">Book the broker</span><q>"Thanks, that's everything. One of our brokers will look at the options and talk you through it in plain English. Would Thursday at 10:30 or Friday at 2 suit?"</q></li>
+              <li><span class="k">If it's not a good time</span><q>"No problem at all. When's better for you?" The callback goes straight into Mercury as a task.</q></li>
+            </ol>
+            <div class="never">
+              <h4>What the caller never does</h4>
+              <ul>
+                <li>Name a lender or suggest a product</li>
+                <li>Quote a rate or promise a saving</li>
+                <li>Push a client who says no</li>
+                <li>Call anyone who has asked not to be called</li>
+              </ul>
+              <p>Advice and recommendations stay with your licensed brokers. The caller's job is to find the clients who want to talk, and make the broker's first conversation an easy one.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden>
+          <h3>The note writes itself into the client file</h3>
+          <p class="muted">Mercury Nexus can already turn a call transcript into a file note, broker tasks and a client follow-up email. The desk uses that feature on every call, so notes are complete, consistent and in the client's own words.</p>
+          <div class="note-grid">
+            <div class="transcript">
+              <h4>From the call</h4>
+              <p class="line"><b>Caller:</b> Are you still on the fixed rate at the moment?</p>
+              <p class="line"><b>Client:</b> Yeah, it ends in November I think. Honestly we're dreading the jump.</p>
+              <p class="line"><b>Caller:</b> Roughly what are your repayments now?</p>
+              <p class="line"><b>Client:</b> About eleven ninety a fortnight. And we'd love to redo the kitchen next year if we can.</p>
+            </div>
+            <div class="made">
+              <h4>Added to the Opportunity</h4>
+              <div class="rec">Loan health check call. Recording consent given at the start. Client confirmed fixed term ends in November and is worried about repayments rising. Repayments about $1,190 a fortnight. Interested in funds for a kitchen renovation next year. Booked with broker, Thursday 10:30.</div>
+              <div class="tasks">
+                <div class="task"><b>Broker task, due Wednesday</b>Run a rate review before Thursday's call</div>
+                <div class="task"><b>Client action</b>Send latest loan statement and two recent payslips</div>
+              </div>
+              <div class="mail">
+                <b>Follow-up email to the client</b><br>
+                Hi [first name], thanks for your time today. Your review with our broker is booked for Thursday at 10:30. To make the most of it, could you send your latest loan statement and two recent payslips?
+                <br><span class="hold">Waits for your broker to approve before it sends</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" tabindex="0" hidden>
+          <h3>Your broker gets a client who is ready to talk</h3>
+          <p class="muted">The booking lands in the right broker's calendar with everything they need, so the first minute of the call is about the client, not about catching up.</p>
+          <div class="book">
+            <div class="cal">
+              <div class="cal-top"><span>Broker calendar</span><span>Thursday</span></div>
+              <div class="cal-body">
+                <div class="slot"><span class="time">9:00</span><span>Settlement follow-up</span></div>
+                <div class="slot new"><span class="time">10:30</span><span><b>Loan review, K.M., Baldivis</b><br>Phone, 30 minutes. Booked by the desk.</span></div>
+                <div class="slot"><span class="time">12:00</span><span>Lender call</span></div>
+                <div class="slot"><span class="time">2:00</span><span>Open</span></div>
+              </div>
+            </div>
+            <div class="handover">
+              <h3>The 20 second read</h3>
+              <p class="muted">Fixed rate ends in November, worried about the repayment jump, paying about $1,190 a fortnight, wants renovation funds next year. Rate review task is already on the file.</p>
+              <ul>
+                <li>Bookings follow your rules: back to the original broker, or by suburb, or by loan type</li>
+                <li>A Rate Review is recorded against the Opportunity, so nothing relies on memory</li>
+                <li>If the client cancels, the desk rebooks them</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p5" aria-labelledby="t5" tabindex="0" hidden>
+          <h3>One page on Friday that tells you what the desk did</h3>
+          <p class="muted">Calls, conversations, reviews booked, and what your brokers did with them. You see straight away whether the week paid for itself.</p>
+          <div class="score">
+            <div><b>186</b><span>Calls made</span></div>
+            <div><b>74</b><span>Conversations</span></div>
+            <div class="hi"><b>19</b><span>Reviews booked with brokers</span></div>
+            <div class="hi"><b>10</b><span>Reprices or refinances in progress</span></div>
+          </div>
+          <div class="funnel">
+            <div class="bars" aria-label="Outcome of this week's conversations">
+              <div class="bar"><span>Review booked</span><i><s style="width:26%"></s></i><em>19</em></div>
+              <div class="bar"><span>Call back later</span><i><s style="width:38%"></s></i><em>28</em></div>
+              <div class="bar"><span>Happy as is</span><i><s style="width:20%"></s></i><em>15</em></div>
+              <div class="bar"><span>Not interested</span><i><s style="width:12%"></s></i><em>9</em></div>
+              <div class="bar"><span>Do not call again</span><i><s style="width:4%"></s></i><em>3</em></div>
+            </div>
+            <div>
+              <h3>Also on the page</h3>
+              <ul>
+                <li>Clients whose fixed term ends in the next 90 days and have not been reached yet</li>
+                <li>What clients said most often, so you can adjust the script</li>
+                <li>Every opt-out, already marked in Mercury</li>
+              </ul>
+            </div>
+          </div>
+          <p class="ex">Example layout with illustrative numbers. Your real figures fill it from the first week.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="lanes">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Warm calls and new conversations, one desk</h2>
+      <p class="lede">Most of the value sits in the clients you already have. New conversations are worked the same day they come in, while they still remember you.</p>
+    </div>
+    <div class="lanes">
+      <div class="w">
+        <h3>Your book</h3>
+        <p class="muted">Clients you have already helped, called before someone else does.</p>
+        <ul>
+          <li>Fixed rate terms ending in the next 90 days</li>
+          <li>Interest only periods about to roll to principal and interest</li>
+          <li>Loans with no rate review recorded in two years or more</li>
+          <li>Clients whose notes mention renovating, investing or upsizing</li>
+          <li>Annual check-ins for settled clients</li>
+        </ul>
+      </div>
+      <div class="c">
+        <h3>New conversations</h3>
+        <p class="muted">People who have already raised their hand, followed up properly.</p>
+        <ul>
+          <li>Enquiries that never went ahead</li>
+          <li>Details collected at your community events and stalls</li>
+          <li>Website and referral partner leads, called within one business day</li>
+          <li>No bought lists and no random numbers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="caller">
+  <div class="wrap caller">
+    <div>
+      <h2>Your caller works for your team only</h2>
+      <p class="lede" style="margin-top:16px">One dedicated person who learns your clients, your brokers and the way your office talks. Not a call centre script read to strangers. Anything about the desk goes to one point of contact on our side.</p>
+      <div class="hours" aria-label="Calling hours in Perth time">
+        <h4>Calling hours, Perth time</h4>
+        <div class="clock" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="eve"></i><i class="eve"></i><i class="eve"></i></div>
+        <div class="clock-l" aria-hidden="true"><span style="grid-column:1/5">9am</span><span style="grid-column:9/11">5pm</span><span style="grid-column:11/12;text-align:right">8pm</span></div>
+        <p class="small muted" style="margin:10px 0 0">Weekdays 9am to 5pm, with evening sessions until 8pm for clients who prefer after work. Saturday mornings if you want them.</p>
+      </div>
+    </div>
+    <ul class="promise">
+      <li><b>You choose your caller</b><span>You get two or three shortlisted callers, each with a resume and a short recording, so you hear them before you decide.</span></li>
+      <li><b>Uses the script you sign off</b><span>Your words, your offer, your tone. Changed whenever you want.</span></li>
+      <li><b>Logs every call the same day</b><span>In Mercury Nexus, on the client's Opportunity. Nothing lives in a spreadsheet.</span></li>
+      <li><b>Hands over only real conversations</b><span>Brokers get clients who agreed to a review, with a summary they can read in 20 seconds.</span></li>
+      <li><b>Keeps going when someone is away</b><span>Cover is arranged so the list keeps moving through holidays and sick days.</span></li>
+      <li><b>Works inside your access</b><span>A Mercury user seat you control and can switch off at any time.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="block alt" id="rails">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Built to keep your licence safe</h2>
+      <p class="lede">Every call follows the rules your business already answers to, so the desk adds results without adding risk.</p>
+    </div>
+    <div class="rails">
+      <div><h3>Permitted hours only</h3><p>9am to 8pm on weekdays and 9am to 5pm on Saturdays, in the client's local time. Never on Sundays or national public holidays.</p></div>
+      <div><h3>Clear introduction</h3><p>The caller gives their name, your business and the reason for the call in the first sentence, with caller ID always on.</p></div>
+      <div><h3>Recording consent</h3><p>Recording is announced at the start of every call. Western Australia needs consent from everyone on the line.</p></div>
+      <div><h3>Do Not Call checks</h3><p>Past clients who no longer hold a loan with you are checked against the Do Not Call Register before they reach a list.</p></div>
+      <div><h3>Advice stays licensed</h3><p>The caller collects facts and books times. Lender comparisons and recommendations stay with your brokers.</p></div>
+      <div><h3>Your data stays yours</h3><p>Work happens inside your Mercury Nexus. Our operations follow ISO 27001 practices.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="start">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Your first 30 days</h2>
+      <p class="lede">Calls start in the second week. By the end of the month you have a full rhythm and your first month of numbers.</p>
+    </div>
+    <ol class="weeks">
+      <li><h3>Set up</h3><p>You choose your caller from the shortlist, Mercury access and phone line sorted, expiry dates checked and filled across the book, script agreed with you, first ranked list built.</p></li>
+      <li><h3>First calls</h3><p>The top 100 clients called, notes landing in Mercury the same day, first reviews booked with your brokers.</p></li>
+      <li><h3>Full rhythm</h3><p>Daily list, heads up texts the day before, both lanes running, callbacks worked through.</p></li>
+      <li><h3>First review with you</h3><p>What converted, what clients said, what to change in the script and the list rules for month two.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="wrap needs">
+    <div>
+      <h2>What we need from you to start</h2>
+      <p class="lede" style="margin-top:16px">Four things, and the desk is calling within a week.</p>
+    </div>
+    <ol class="ask">
+      <li><span>A Mercury Nexus user seat for the caller, with the access level you are comfortable with.</span></li>
+      <li><span>Details of the phone system your team uses today, so calls go out from your number.</span></li>
+      <li><span>Which brokers take reviews, and how their calendars are shared.</span></li>
+      <li><span>Any clients or groups you never want called.</span></li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Sample data throughout. Client names and details are masked and illustrative.</div>
+</footer>
+
+<script>
+(function(){
+  document.documentElement.className += " js";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var rows = document.getElementById("heroRows");
+  var status = document.getElementById("heroStatus");
+  function finalState(){ status.className = "st done"; status.textContent = "Booked, Thu 10:30"; }
+  if (reduce) { rows.classList.add("in"); finalState(); }
+  else {
+    requestAnimationFrame(function(){ rows.classList.add("in"); });
+    setTimeout(function(){ status.className = "st call"; status.textContent = "On the call"; }, 1300);
+    setTimeout(finalState, 4200);
+  }
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function select(tab, focus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+    if (window.innerWidth <= 900) tab.scrollIntoView({block:"nearest", inline:"center", behavior: reduce ? "auto" : "smooth"});
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener("click", function(){ select(t, false); });
+    t.addEventListener("keydown", function(e){
+      var k = e.key, n = null;
+      if (k === "ArrowDown" || k === "ArrowRight") n = tabs[(i + 1) % tabs.length];
+      if (k === "ArrowUp" || k === "ArrowLeft") n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (k === "Home") n = tabs[0];
+      if (k === "End") n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
